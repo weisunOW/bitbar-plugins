@@ -2,6 +2,7 @@
 
 import psutil as pu
 import time
+import os
 
 def humanise(byte_size=0, suffix='B'):
     size = byte_size
@@ -49,28 +50,28 @@ def system_info():
 def load_per_core():
     loads = pu.cpu_percent(interval=None, percpu=True)
     average_load = sum(loads) / len(loads)
-    result = ["CPU: {:3.1f}% | color={}".format(average_load, load_color(average_load))]
+    result = ["CPU: {:3.1f}% | font=courier color={}".format(average_load, load_color(average_load))]
     for i, l in enumerate(loads):
-        result.append("\n--Core {}: {}% | color={}".format(i, l, load_color(l)))
+        result.append("\n--Core {}: {}% | font=courier color={}".format(i, l, load_color(l)))
     return ''.join(result)
 
 def mem_percent():
     vmem = pu.virtual_memory()
-    mem_load = ["Memory: {}% | color={}".format(vmem.percent, load_color(vmem.percent))]
-    mem_load.append("\n--{}{}".format("Total: ", humanise(vmem.total)))
-    mem_load.append("\n--{}{}".format("Available: ", humanise(vmem.available)))
-    mem_load.append("\n--{}{}".format("Used: ", humanise(vmem.used)))
-    mem_load.append("\n--{}{}".format("Free: ", humanise(vmem.free)))
-    mem_load.append("\n--{}{}".format("Active: ", humanise(vmem.active)))
-    mem_load.append("\n--{}{}".format("Inactive: ", humanise(vmem.inactive)))
-    mem_load.append("\n--{}{}".format("Wired:", humanise(vmem.wired)))
+    mem_load = ["Memory: {}% | font=courier color={}".format(vmem.percent, load_color(vmem.percent))]
+    mem_load.append("\n--{0:<10}: {1:>9} | font=courier".format("Total", humanise(vmem.total)))
+    mem_load.append("\n--{0:<10}: {1:>9} | font=courier".format("Available", humanise(vmem.available)))
+    mem_load.append("\n--{0:<10}: {1:>9} | font=courier".format("Used", humanise(vmem.used)))
+    mem_load.append("\n--{0:<10}: {1:>9} | font=courier".format("Free", humanise(vmem.free)))
+    mem_load.append("\n--{0:<10}: {1:>9} | font=courier".format("Active", humanise(vmem.active)))
+    mem_load.append("\n--{0:<10}: {1:>9} | font=courier".format("Inactive", humanise(vmem.inactive)))
+    mem_load.append("\n--{0:<10}: {1:>9} | font=courier".format("Wired", humanise(vmem.wired)))
     return ''.join(mem_load)
 
 cpu, mem, bandwidth = system_info()
 cpu = "CPU: {}%".format(cpu)
-mem = "MEM: {}%".format(mem)
+mem = "Memory: {}%".format(mem)
 bandwidth = "Bandwidth: {}".format(bandwidth)
-print("{0:^}  ❙  {1:^}  ❙  {2:^}".format(cpu, mem, bandwidth))
+print("{0:^} ❙ {1:^} ❙ {2:^} | trim=false font=courier".format(cpu, mem, bandwidth))
 print("---")
 print(load_per_core())
 print(mem_percent())
