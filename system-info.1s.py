@@ -73,8 +73,8 @@ def network_info():
     result = ["Network"]
     menu_format = "\n--{}: {} | font=courier color=black"
     for key in keys:
-        nic_address_info = (nic for nic in net_info[key] if nic.family.name == 'AF_INET')
-        for n in nic_address_info:
+        inet4_address_info = (nic for nic in net_info[key] if nic.family.name == 'AF_INET')
+        for n in inet4_address_info:
             result.append(menu_format.format(key, n.address))
     return ''.join(result)
 
